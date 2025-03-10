@@ -6,7 +6,17 @@ function redirectToSocial() {
 // Start audio on user interaction (to bypass autoplay restrictions)
 document.addEventListener('click', () => {
   const audio = document.getElementById('background-audio');
+  
+  // Play audio only if it's paused
   if (audio.paused) {
-    audio.play().catch(error => console.error('Audio play failed:', error));
+    audio
+      .play()
+      .then(() => console.log('Audio started successfully'))
+      .catch(error => console.error('Audio play failed:', error));
   }
-}, { once: true }); // Only trigger once
+  
+  // Optional: Automatically restart audio when it ends (should work with loop attribute)
+  audio.addEventListener('ended', () => {
+    audio.play();
+  });
+}, { once: true }); // Ensures it triggers only once
